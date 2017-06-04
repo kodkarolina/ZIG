@@ -1,8 +1,12 @@
-import mysql.connector
+from flaskext.mysql import MySQL
 
 class Employee:
+
+    def __init__(self, mysql):
+        self.mysql = mysql
+
     def getEmpData(self):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+        con = self.mysql.connect()
         cursor = con.cursor()
         sql = "SELECT * FROM employees"
         cursor.execute(sql)
@@ -21,8 +25,8 @@ class Employee:
         con.close()
         return result
 
-    def getOneEmpData(empId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def getOneEmpData(self, empId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "SELECT * FROM employees WHERE employee_id = %s"
@@ -42,8 +46,8 @@ class Employee:
         con.close()
         return result
 
-    def updateEmpData(idEmployee, name, surname, email):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def updateEmpData(self, idEmployee, name, surname, email):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = name, surname, email, idEmployee
@@ -58,8 +62,8 @@ class Employee:
 
         return 1
 
-    def addEmpData(userId, name, surname, email):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def addEmpData(self, userId, name, surname, email):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = userId, name, surname, email
@@ -73,8 +77,8 @@ class Employee:
         con.close()
         return 1
 
-    def deleteEmpData(empId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def deleteEmpData(self, empId):
+        con = self.mysql.connect()
         cursor = con.cursor()
         sql = "DELETE FROM employees WHERE employee_id = %s"
         cursor.execute(sql, (empId,))

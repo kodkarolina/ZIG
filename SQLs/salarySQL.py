@@ -1,8 +1,12 @@
-import mysql.connector
+from flaskext.mysql import MySQL
 
 class Salary:
+
+    def __init__(self, mysql):
+        self.mysql = mysql
+
     def getSalaryData(self):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "SELECT * FROM salaries"
@@ -26,8 +30,8 @@ class Salary:
         con.close()
         return result
 
-    def getOneSalaryDara(employeeId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def getOneSalaryDara(self, mployeeId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "SELECT * FROM salaries WHERE employee_id = %s"
@@ -50,8 +54,8 @@ class Salary:
         con.close()
         return result
 
-    def updateSalaryData(employeeId, minHours, salary, startHour, endHour):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def updateSalaryData(self, employeeId, minHours, salary, startHour, endHour):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = minHours, salary, startHour, endHour, employeeId
@@ -65,8 +69,8 @@ class Salary:
         con.close()
         return 1
 
-    def addSalaryData(employeeId, minHours, salary, startHour, endHour):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def addSalaryData(self, employeeId, minHours, salary, startHour, endHour):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = employeeId, minHours, salary, startHour, endHour

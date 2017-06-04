@@ -1,8 +1,11 @@
-import mysql.connector
+from flaskext.mysql import MySQL
 
 class Custom:
-    def getCustomSalaryData(employeeId, startDate, endDate):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def __init__(self, mysql):
+        self.mysql = mysql
+
+    def getCustomSalaryData(self, employeeId, startDate, endDate):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = startDate, endDate, employeeId

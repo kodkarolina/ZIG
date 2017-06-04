@@ -1,9 +1,16 @@
-import mysql.connector
+from flaskext.mysql import MySQL
 
 class Address:
+
+    def __init__(self, mysql):
+        self.mysql = mysql
+
     def getAddressData(self):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+
+        con = self.mysql.connect()
         cursor = con.cursor()
+        # con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+        # cursor = con.cursor()
         sql = "SELECT * FROM addresses"
         cursor.execute(sql)
 
@@ -21,8 +28,8 @@ class Address:
         con.close()
         return result
 
-    def getOneAddressData(employeeId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def getOneAddressData(self, employeeId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "SELECT * FROM addresses WHERE employee_id = %s"
@@ -42,8 +49,8 @@ class Address:
         con.close()
         return result
 
-    def updateAddressData(country, city, address, postcode, phone, employeeId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def updateAddressData(self, country, city, address, postcode, phone, employeeId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = country, city, address, postcode, phone, employeeId
@@ -57,8 +64,8 @@ class Address:
         con.close()
         return 1
 
-    def addAddressData(employeeId, country, city, address, postcode, phone):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def addAddressData(self, employeeId, country, city, address, postcode, phone):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = employeeId, country, city, address, postcode, phone

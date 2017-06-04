@@ -1,8 +1,12 @@
-import mysql.connector
+from flaskext.mysql import MySQL
 
 class Department:
+
+    def __init__(self, mysql):
+        self.mysql = mysql
+
     def getDepartmentData(self):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "SELECT * FROM departments"
@@ -22,8 +26,8 @@ class Department:
         con.close()
         return result
 
-    def getOneDepartmentData(departmentId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def getOneDepartmentData(self, departmentId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "SELECT * FROM departments WHERE department_id = %s"
@@ -43,8 +47,8 @@ class Department:
         con.close()
         return result
 
-    def updateDepartmentData(departmentId, departmentName):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def updateDepartmentData(self, departmentId, departmentName):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = departmentName, departmentId
@@ -58,8 +62,8 @@ class Department:
         con.close()
         return 1
 
-    def addDepartmentData(departmentName):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def addDepartmentData(self, departmentName):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "INSERT INTO departments (department_name) " \
@@ -73,8 +77,8 @@ class Department:
         con.close()
         return 1
 
-    def deleteDepartmentData(departmentId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def deleteDepartmentData(self, departmentId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "DELETE FROM departments WHERE department_id=%s"

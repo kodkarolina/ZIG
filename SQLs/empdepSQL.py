@@ -1,8 +1,12 @@
-import mysql.connector
+from flaskext.mysql import MySQL
 
 class Empdep:
+
+    def __init__(self, mysql):
+        self.mysql = mysql
+
     def getEmpDepData(self):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         sql = "SELECT * FROM emp_dep"
@@ -22,8 +26,8 @@ class Empdep:
         con.close()
         return result
 
-    def updateEmpDepData(employeeId, departmentId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def updateEmpDepData(self, employeeId, departmentId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = departmentId, employeeId
@@ -37,8 +41,8 @@ class Empdep:
         con.close()
         return 1
 
-    def addEmpDepData(employeeId, departmentId):
-        con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
+    def addEmpDepData(self, employeeId, departmentId):
+        con = self.mysql.connect()
         cursor = con.cursor()
 
         args = employeeId, departmentId

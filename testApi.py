@@ -8,6 +8,7 @@ from SQLs.departmentSQL import Department
 from SQLs.empdepSQL import Empdep
 from SQLs.customSQL import Custom
 
+
 app = Flask(__name__)
 
 #===================================ROUTES FOR USERS==========================================
