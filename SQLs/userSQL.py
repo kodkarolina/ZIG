@@ -1,10 +1,13 @@
-from flaskext.mysql import MySQL
 
 class User:
 
     def __init__(self, mysql):
         self.mysql = mysql
-
+    #     is_authenticated = False
+    #     is_active = False
+    #     is_anonymous = False
+    #
+    # def get_sesion_id(self):
 
     def getUserData(self):
         con = self.mysql.connect()
@@ -82,7 +85,7 @@ class User:
         args = login, password, permission, userId
         sql = "UPDATE users SET login = %s, password = %s, permission = %s WHERE user_id = %s"
 
-        #sql = "UPDATE users SET login='" + login + "', password='" + password + "', permission='" + permission +\
+        # sql = "UPDATE users SET login='" + login + "', password='" + password + "', permission='" + permission +\
         #      "' WHERE user_id=" + userId
 
         cursor.execute(sql, args)

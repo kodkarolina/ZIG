@@ -1,9 +1,10 @@
 #!/usr/bin/env PYTHON
 # -*- coding: utf-8 -*-
 
-from flask import Flask, jsonify, request #, json
-from flask_restful import  Api #, Resource, reqparse
+from flask import Flask, jsonify, Request, request, json
+from flask_restful import Api #, Resource, reqparse
 from flaskext.mysql import MySQL
+import flask_login
 
 from ZIG.SQLs.employeeSQL import Employee
 from ZIG.SQLs.userSQL import User
@@ -15,7 +16,7 @@ from ZIG.SQLs.customSQL import Custom
 
 app = Flask(__name__)
 mysql = MySQL()
-
+login_manager = flask_login.LoginManager()
 #==================================Definition of objects==========================================
 employee = Employee(mysql)
 user = User(mysql)
@@ -25,21 +26,31 @@ department = Department(mysql)
 empdep = Empdep(mysql)
 custom = Custom(mysql)
 
-
+#config_db = {'root', 'BazaDanychYolo94', 'rcp', 'localhost'}
 #MySQL configuation
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'BazaDanychYolo94'
 app.config['MYSQL_DATABASE_DB'] = 'rcp'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
+
 mysql.init_app(app)
 
 api = Api(app)
 
+#==========================user_authorisation=====================================================
+# @login_manager.user_loader()
+# def load_user(user_session_id)
+#     return User.get(user_session_id)
+
+
+# @app.route('/login', methods=['GET', 'POST'])
+
+
 #===================================ROUTES FOR USERS==========================================
 @app.route('/users', methods=['GET'])
 def getUser():
-    return jsonify({'users' : user.getUserData()})
+    return jsonify({'users': user.getUserData()})
 
 @app.route('/users/<string:userId>', methods=['GET'])
 def getOneUser(userId):
@@ -47,10 +58,12 @@ def getOneUser(userId):
 
 @app.route('/users', methods=['POST'])
 def addUser():
+
     login = request.json['login']
     password = request.json['password']
     permission = request.json['permission']
     return jsonify(user.addUserData(login, password, permission))
+
 
 @app.route('/users_p/<string:userId>', methods=['PUT'])
 def updateUserPassword(userId):
@@ -71,8 +84,7 @@ def deleteUserData(userId):
 #===================================ROUTES FOR EMPLOYEES==========================================
 @app.route('/emp', methods=['GET'])
 def getEmp():
-    empInfo = Employee()
-    return jsonify({'emps' : empInfo.getEmpData()})
+    return jsonify({'emps' : employee.getEmpData()})
 
 @app.route('/emp/<string:empId>', methods=['GET'])
 def getOneEmployee(empId):
@@ -99,7 +111,6 @@ def deleteEmp(empId):
 #===================================ROUTES FOR ADDRESS==========================================
 @app.route('/address', methods=['GET'])
 def getAddress():
-
     return jsonify({'addresses': address.getAddressData()})
 
 @app.route('/address/<string:employeeId>', methods=['GET'])

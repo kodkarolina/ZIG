@@ -15,7 +15,7 @@ app = Flask(__name__)
 @app.route('/users', methods=['GET'])
 def getUser():
     userInfo = User()
-    return jsonify({'users' : userInfo.getUserData()})
+    return jsonify({'users' : userInfo.getUserData})
 
 @app.route('/users/<string:userId>', methods=['GET'])
 def getOneUser(userId):

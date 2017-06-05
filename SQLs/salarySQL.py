@@ -1,4 +1,3 @@
-from flaskext.mysql import MySQL
 
 class Salary:
 
@@ -30,7 +29,7 @@ class Salary:
         con.close()
         return result
 
-    def getOneSalaryDara(self, mployeeId):
+    def getOneSalaryDara(self, employeeId):
         con = self.mysql.connect()
         cursor = con.cursor()
 
