@@ -1,10 +1,13 @@
 #!/usr/bin/env PYTHON
 # -*- coding: utf-8 -*-
 
-from flask import Flask, jsonify, Request, request, json
+from flask import Flask, jsonify, Request, json, request
 from flask_restful import Api #, Resource, reqparse
 from flaskext.mysql import MySQL
-import flask_login
+from flask_login import  LoginManager
+
+
+from ZIG.log_user import LogUser
 
 from ZIG.SQLs.employeeSQL import Employee
 from ZIG.SQLs.userSQL import User
@@ -15,8 +18,22 @@ from ZIG.SQLs.empdepSQL import Empdep
 from ZIG.SQLs.customSQL import Custom
 
 app = Flask(__name__)
+app.config.from_object('config')
+
 mysql = MySQL()
-login_manager = flask_login.LoginManager()
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+#MySQL configuation
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'BazaDanychYolo94'
+app.config['MYSQL_DATABASE_DB'] = 'rcp'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+
+mysql.init_app(app)
+
+api = Api(app)
+
 #==================================Definition of objects==========================================
 employee = Employee(mysql)
 user = User(mysql)
@@ -25,27 +42,16 @@ salary = Salary(mysql)
 department = Department(mysql)
 empdep = Empdep(mysql)
 custom = Custom(mysql)
-
-#config_db = {'root', 'BazaDanychYolo94', 'rcp', 'localhost'}
-#MySQL configuation
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'BazaDanychYolo94'
-app.config['MYSQL_DATABASE_DB'] = 'rcp'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-
-
-mysql.init_app(app)
-
-api = Api(app)
-
+logUser = LogUser(mysql)
 #==========================user_authorisation=====================================================
-# @login_manager.user_loader()
-# def load_user(user_session_id)
-#     return User.get(user_session_id)
 
+@app.route('/logging', methods=[ 'POST'])
+def logging():
 
-# @app.route('/login', methods=['GET', 'POST'])
+    login = request.json['login']
+    password = request.json['password']
 
+    return jsonify({"log_user": logUser.is_password_ok(login, password)})
 
 #===================================ROUTES FOR USERS==========================================
 @app.route('/users', methods=['GET'])
@@ -58,7 +64,6 @@ def getOneUser(userId):
 
 @app.route('/users', methods=['POST'])
 def addUser():
-
     login = request.json['login']
     password = request.json['password']
     permission = request.json['permission']
@@ -99,10 +104,11 @@ def updateEmployee(empId):
 
 @app.route('/emp', methods=['POST'])
 def addEmp():
+    userId = request.json['userId']
     name = request.json['Name']
     surname = request.json['Surname']
     email = request.json['Email']
-    return jsonify(employee.addEmpData(name, surname, email))
+    return jsonify(employee.addEmpData(userId, name, surname, email))
 
 @app.route('/emp/<string:empId>', methods=['DELETE'])
 def deleteEmp(empId):

@@ -3,11 +3,6 @@ class User:
 
     def __init__(self, mysql):
         self.mysql = mysql
-    #     is_authenticated = False
-    #     is_active = False
-    #     is_anonymous = False
-    #
-    # def get_sesion_id(self):
 
     def getUserData(self):
         con = self.mysql.connect()
