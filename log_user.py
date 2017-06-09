@@ -22,11 +22,29 @@ class LogUser:
         con.close()
 
         pass_word = result[0]['password']
-        print(pass_word)
+
         if password == pass_word:
-
-            return result[0]['user_id']
+            return True
         else:
-            return 'logged failed'
+            return False
 
-    # def authenticate(self,result):
+    def get_result(self, login):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+        sql = "SELECT * FROM users WHERE login = %s"
+        cursor.execute(sql, (login,))
+
+        columns = cursor.description
+
+        result = []
+        for value in cursor.fetchall():
+            tmp = {}
+            for (index, column) in enumerate(value):
+                tmp[columns[index][0]] = column
+            result.append(tmp)
+        print(result)
+
+        cursor.close()
+        con.close()
+        return result
+
