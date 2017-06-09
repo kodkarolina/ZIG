@@ -1,3 +1,3 @@
-from ZIG import app
+from ZIG.app import app
 
 app.run(debug=True)

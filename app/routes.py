@@ -1,16 +1,19 @@
-from ZIG import app
-from ZIG.flask_server import mysql
-from ZIG.models import db
-from flask import Flask, jsonify, Request, json, request, session
-from ZIG.SQLs.employeeSQL import Employee
-from ZIG.SQLs.userSQL import User
+from flask import jsonify, request,session
+
+from ZIG.app import app
+
 from ZIG.SQLs.addressSQL import Address
-from ZIG.SQLs.salarySQL import Salary
+from ZIG.SQLs.customSQL import Custom
 from ZIG.SQLs.departmentSQL import Department
 from ZIG.SQLs.empdepSQL import Empdep
-from ZIG.SQLs.customSQL import Custom
-from ZIG.log_user import LogUser
+from ZIG.SQLs.employeeSQL import Employee
+from ZIG.SQLs.salarySQL import Salary
+from ZIG.SQLs.userSQL import User
+from ZIG.SQLs.cardSQL import Card
 
+from ZIG.app.models import db
+from ZIG.app.models import mysql
+from ZIG.log_user import LogUser
 #==================================Definition of objects==========================================
 employee = Employee(mysql)
 user = User(mysql)
@@ -20,18 +23,31 @@ department = Department(mysql)
 empdep = Empdep(mysql)
 custom = Custom(mysql)
 logUser = LogUser(mysql)
+card = Card(mysql)
+
+#======================================session test=================================================
 
 
-@app.route('/testdb')
-def testdb():
-  if db.session.query("1").from_statement("SELECT 1").all():
-    return 'It works.'
-  else:
-    return 'Something is broken.'
+@app.route('/api/user/', methods = ['POST'])
+def login():
+    login = request.json['login']
+    password = request.json['password']
+
+    if logUser.is_password_ok(login, password) == True:
+        session['logged_in'] = True
+        data = logUser.get_result(login)
+
+    else:
+        data = {"message": "You are not logged in"}
+
+    return jsonify(data)
 
 
+@app.route('/logout')
+def logout():
+    session['logged_in'] = False
+    return 'you are logout'
 #==========================user_authorisation=====================================================
-
 
 @app.route('/logging', methods=['GET', 'POST'])
 def logging():
@@ -93,12 +109,12 @@ def deleteUserData(userId):
 #===================================ROUTES FOR EMPLOYEES==========================================
 
 
-@app.route('/emp', methods=['GET'])
+@app.route('/api/employee/', methods=['GET'])
 def getEmp():
-    return jsonify({'emps' : employee.getEmpData()})
+    return jsonify(employee.getEmpData())
 
 
-@app.route('/emp/<string:empId>', methods=['GET'])
+@app.route('/api/employee/<string:empId>/', methods=['GET'])
 def getOneEmployee(empId):
     return jsonify(employee.getOneEmpData(empId))
 
@@ -242,3 +258,15 @@ def getCustomSalary(employeeId):
     startDate = request.json['start_date']
     endDate = request.json['end_date']
     return jsonify(custom.getCustomSalaryData(employeeId, startDate, endDate))
+
+
+#===================================ROUTES FOR EMPLOYEES==========================================
+
+@app.route('/api/cards', methods = ["GET"] )
+def getCardsID():
+    return jsonify(card.getCardNummers())
+
+
+@app.route('/api/empcard', methods = ["GET"] )
+def getCardInfo():
+    return jsonify(card.getCardData())
