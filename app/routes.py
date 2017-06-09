@@ -241,14 +241,14 @@ def deleteDepartment(departmentId):
 
 @app.route('/empdep', methods=['GET'])
 def getEmpDep():
-    return jsonify({'empdep' : empdep.getEmpDepData()})
+    return jsonify(empdep.getEmpDepData())
 
 
 @app.route('/empdep', methods=['POST'])
 def addEmpDep():
     departmentId = request.json['department_id']
     employeeId = request.json['employee_id']
-    return  jsonify(empdep.addEmpDepData(employeeId, departmentId))
+    return jsonify(empdep.addEmpDepData(employeeId, departmentId))
 
 #===================================ROUTES FOR CUSTOM==========================================
 
@@ -260,13 +260,20 @@ def getCustomSalary(employeeId):
     return jsonify(custom.getCustomSalaryData(employeeId, startDate, endDate))
 
 
-#===================================ROUTES FOR EMPLOYEES==========================================
+#===================================ROUTES FOR CARDS==========================================
 
-@app.route('/api/cards', methods = ["GET"] )
-def getCardsID():
+
+@app.route('/api/cards', methods=["GET"])
+def getCardsNumbers():
     return jsonify(card.getCardNummers())
 
 
-@app.route('/api/empcard', methods = ["GET"] )
+@app.route('/api/empcard', methods=["GET"])
 def getCardInfo():
     return jsonify(card.getCardData())
+
+
+@app.route('/api/empcard/', methods=['POST'])
+def addCard():
+    card_number = request.json['card_number']
+    return jsonify(card.addNewCard(card_number))

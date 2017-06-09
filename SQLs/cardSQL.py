@@ -43,6 +43,20 @@ class Card:
         con.close()
         return result
 
+    def addNewCard(self, card_number):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        sql = "INSERT INTO cards (card_number) VALUES (%s)"
+
+        cursor.execute(sql, (card_number,) )
+
+        con.commit()
+
+        cursor.close()
+        con.close()
+        return 1
+
 # Pobranie listy kart
 # get (/api/empcard)
 # OK: lista wszystkich kart (employee_id, firstName, lastName, card_number)
