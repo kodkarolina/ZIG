@@ -1,20 +1,20 @@
 from flask import jsonify, request,session
 
-from ZIG.App import app
+from App import app
 
-from ZIG.SQLs.addressSQL import Address
-from ZIG.SQLs.customSQL import Custom
-from ZIG.SQLs.departmentSQL import Department
-from ZIG.SQLs.empdepSQL import Empdep
-from ZIG.SQLs.employeeSQL import Employee
-from ZIG.SQLs.salarySQL import Salary
-from ZIG.SQLs.userSQL import User
-from ZIG.SQLs.cardSQL import Card
-from ZIG.SQLs.worktimeSQL import WorkTime
+from SQLs.addressSQL import Address
+from SQLs.customSQL import Custom
+from SQLs.departmentSQL import Department
+from SQLs.empdepSQL import Empdep
+from SQLs.employeeSQL import Employee
+from SQLs.salarySQL import Salary
+from SQLs.userSQL import User
+from SQLs.cardSQL import Card
+from SQLs.worktimeSQL import WorkTime
 
-from ZIG.App.models import db
-from ZIG.App.models import mysql
-from ZIG.log_user import LogUser
+from App.models import db
+from App.models import mysql
+from log_user import LogUser
 #==================================Definition of objects==========================================
 employee = Employee(mysql)
 user = User(mysql)

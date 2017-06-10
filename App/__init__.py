@@ -11,4 +11,4 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:BazaDanychYolo94@localhost
 # from ZIG.models import db
 # db.init_app(App)
 
-import ZIG.App.routes
+import App.routes
