@@ -55,3 +55,40 @@ class Empdep:
         cursor.close()
         con.close()
         return 1
+
+    def updateEmpDepData(self, employeeId, departmentId):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        args = departmentId, employeeId
+        sql = "UPDATE emp_dep SET department_id= %s WHERE employee_id = %s"
+
+        cursor.execute(sql, args)
+
+        con.commit()
+
+        cursor.close()
+        con.close()
+        return 1
+
+    def getEmpDepList(self):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        sql = "SELECT employee_id, name, surname, department_name, department_id FROM employees JOIN emp_dep " \
+              "USING(employee_id) JOIN departments USING(department_id) ORDER BY department_id"
+        cursor.execute(sql)
+
+        columns = cursor.description
+
+        result = []
+        for value in cursor.fetchall():
+            tmp = {}
+            for (index, column) in enumerate(value):
+                tmp[columns[index][0]] = column
+            result.append(tmp)
+        print(result)
+
+        cursor.close()
+        con.close()
+        return result

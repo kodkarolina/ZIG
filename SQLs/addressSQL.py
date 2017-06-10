@@ -54,7 +54,7 @@ class Address:
         cursor = con.cursor()
 
         args = country, city, address, postcode, phone, employeeId
-        sql = "UPDATE addresses SET country=%s, city=%s, address=%s, postcode=%s, phone=%s WHERE employee_id=%s"
+        sql = "UPDATE addresses SET country=%s, city=%s, address=%s, postcode=%s, phone_number=%s WHERE employee_id=%s"
 
         cursor.execute(sql, args)
 

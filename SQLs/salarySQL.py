@@ -83,3 +83,36 @@ class Salary:
         cursor.close()
         con.close()
         return 1
+
+    def generateSalaryValue(self, employe_id, start_date, end_date):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        args = start_date, end_date, employe_id
+        sql = "SELECT ROUND(((SUM(TIME_TO_SEC(timediff(exit_hour, entry_hour))))/60/60) * s.salary_value , 2)  " \
+              "AS 'Zarobek', salary_value FROM employees e JOIN working_time w USING(employee_id) JOIN salaries s " \
+              "USING(employee_id) WHERE (%s <= w.date) AND (%s>= w.date) AND e.employee_id = %s"
+        cursor.execute(sql, args)
+
+        columns = cursor.description
+
+        result = []
+        for value in cursor.fetchall():
+            tmp = {}
+            for (index, column) in enumerate(value):
+                if columns[index][0] == "start_hour" or columns[index][0] == "end_hour":
+                    tmp[columns[index][0]] = str(column)
+                else:
+                    tmp[columns[index][0]] = column
+            result.append(tmp)
+        print(result)
+
+        zarobek = str(result[0]['Zarobek'])
+        salary_value = result[0]['salary_value']
+
+        result = [{"Zarobek": zarobek, 'salary_value': salary_value }]
+        print(result)
+
+        cursor.close()
+        con.close()
+        return result

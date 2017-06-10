@@ -57,19 +57,37 @@ class Card:
         con.close()
         return 1
 
-    def updateCardtData(self, card_id, employee_id):
+    def updateCardData(self, card_number, employee_id):
         con = self.mysql.connect()
         cursor = con.cursor()
 
-        args = card_id, employee_id
-        sql = "UPDATE cards SET card=%s WHERE department_id=%s"
+        sql_1 = 'SELECT user_id, card_number FROM employees JOIN cards USING(user_id) WHERE employee_id =%s'
+        cursor.execute(sql_1, (employee_id,))
+        columns = cursor.description
 
-        cursor.execute(sql, args)
+        result_1 = []
+        for value in cursor.fetchall():
+            tmp = {}
+            for (index, column) in enumerate(value):
+                tmp[columns[index][0]] = column
+            result_1.append(tmp)
+        print(result_1)
 
+        user_id = result_1[0]['user_id']
+        card_number_to_null = result_1[0]['card_number']
+
+        print(user_id, card_number_to_null)
+
+        sql_2 = 'UPDATE cards SET user_id=null WHERE card_number =%s'
+        cursor.execute(sql_2, (card_number_to_null,))
+        con.commit()
+
+        args_3 = user_id, card_number
+        sql_3 = 'UPDATE cards SET user_id=(%s) WHERE card_number =%s'
+        cursor.execute(sql_3, args_3)
         con.commit()
 
         cursor.close()
         con.close()
         return 1
-
 
