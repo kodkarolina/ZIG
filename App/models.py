@@ -1,4 +1,4 @@
-from ZIG.app import app
+from ZIG.App import app
 
 #=====================SQLAlchemy DataBase==============================
 from flask_sqlalchemy import SQLAlchemy

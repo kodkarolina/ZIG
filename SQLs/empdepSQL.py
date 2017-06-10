@@ -55,3 +55,18 @@ class Empdep:
         cursor.close()
         con.close()
         return 1
+
+    def updateEmpDepData(self, employeeId, departmentId):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        args = departmentId, employeeId
+        sql = "UPDATE emp_dep SET department_id= %s WHERE employee_id = %s"
+
+        cursor.execute(sql, args)
+
+        con.commit()
+
+        cursor.close()
+        con.close()
+        return 1
