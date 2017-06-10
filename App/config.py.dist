@@ -1,6 +1,12 @@
 WTF_CSRF_ENABLED = True
 SECRET_KEY = 'you-will-never-guess'
 
+#You must configure this fields!
+DB_USER = 'user'
+DB_PWD = 'password'
+DB_NAME = 'database'
+DB_HOST = 'localhost'
+
 
 OPENID_PROVIDERS = [
     {'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},
