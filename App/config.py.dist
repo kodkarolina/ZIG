@@ -1,8 +1,15 @@
 WTF_CSRF_ENABLED = True
 SECRET_KEY = 'you-will-never-guess'
 
+#You must configure this fields!
+
 HOST_NAME = "192.168.0.157"
 HOST_PORT = 8189
+
+DB_USER = 'user'
+DB_PWD = 'password'
+DB_NAME = 'database'
+DB_HOST = 'localhost'
 
 
 OPENID_PROVIDERS = [
@@ -11,3 +18,5 @@ OPENID_PROVIDERS = [
     {'name': 'AOL', 'url': 'http://openid.aol.com/<username>'},
     {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'},
     {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}]
+
+import os
