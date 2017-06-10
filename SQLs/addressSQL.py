@@ -9,8 +9,6 @@ class Address:
 
         con = self.mysql.connect()
         cursor = con.cursor()
-        # con = mysql.connector.connect(user='root', password='pw123', host='localhost', database='rcp')
-        # cursor = con.cursor()
         sql = "SELECT * FROM addresses"
         cursor.execute(sql)
 

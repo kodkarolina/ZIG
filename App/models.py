@@ -4,10 +4,10 @@ from App.config import DB_PWD
 from App.config import DB_NAME
 from App.config import DB_HOST
 
-#=====================SQLAlchemy DataBase==============================
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy(app)
+# #=====================SQLAlchemy DataBase==============================
+# from flask_sqlalchemy import SQLAlchemy
+#
+# db = SQLAlchemy(app)
 
 #=====================MySQL DataBase==============================
 from flaskext.mysql import MySQL

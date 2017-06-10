@@ -1,4 +1,4 @@
-from flask import jsonify, request,session
+from flask import jsonify, request, session
 
 from App import app
 
@@ -12,10 +12,11 @@ from SQLs.userSQL import User
 from SQLs.cardSQL import Card
 from SQLs.worktimeSQL import WorkTime
 
-from App.models import db
 from App.models import mysql
 from log_user import LogUser
-#==================================Definition of objects==========================================
+
+# ==================================Definition of objects==========================================
+
 employee = Employee(mysql)
 user = User(mysql)
 address = Address(mysql)
@@ -27,10 +28,10 @@ logUser = LogUser(mysql)
 card = Card(mysql)
 work_time = WorkTime(mysql)
 
-#======================================session test=================================================
+# ======================================session test=================================================
 
+# ==========================user_authorisation=====================================================
 
-#==========================user_authorisation=====================================================
 
 @app.route('/logging/', methods=['GET', 'POST'])
 def logging():
@@ -43,9 +44,7 @@ def logging():
             data = {"message": "You are not logged in"}
         else:
             data = logUser.get_result(login)
-            # newuser = data[0]['login']
-            # db.session.add()
-            # db.session.commit()
+
         return jsonify(data)
     elif request.method == 'GET':
         return jsonify({"message": "You are not logged in"})
@@ -56,7 +55,7 @@ def logout():
     session['logged_in'] = False
     return 'you are logout'
 
-#===================================ROUTES FOR USERS==========================================
+# ===================================ROUTES FOR USERS==========================================
 
 
 @app.route('/users/', methods=['GET'])
@@ -95,7 +94,7 @@ def updateUserData(user_id):
 def deleteUserData(user_id):
     return jsonify(user.deleteUserData(user_id))
 
-#===================================ROUTES FOR EMPLOYEES==========================================
+# ===================================ROUTES FOR EMPLOYEES==========================================
 
 
 @app.route('/api/employee/', methods=['GET'])
@@ -130,7 +129,7 @@ def addEmp():
 def deleteEmp(emp_id):
     return jsonify(employee.deleteEmpData(emp_id))
 
-#===================================ROUTES FOR ADDRESS==========================================
+# ===================================ROUTES FOR ADDRESS==========================================
 
 
 @app.route('/address/', methods=['GET'])
@@ -163,7 +162,7 @@ def addAddress():
     phone = request.json['phone_number']
     return jsonify(address.addAddressData(employee_id, country, city, address_v, postcode, phone))
 
-#===================================ROUTES FOR SALARY===========================================
+# ===================================ROUTES FOR SALARY===========================================
 
 
 @app.route('/salary/', methods=['GET'])
@@ -195,13 +194,14 @@ def addSalary():
     return jsonify(salary.updateSalaryData(employee_id, min_hours, salary_v, start_hour, end_hour))
 
 
-@app.route('/countsalary/<string:employee_id>', methods=['POST'])
+@app.route('/earnings/<string:employee_id>', methods=['POST'])
 def countSalary(employee_id):
     start_date = request.json['start_date']
     end_date = request.json['end_date']
     return jsonify(salary.generateSalaryValue(employee_id, start_date, end_date))
 
-#===================================ROUTES FOR DEPARTMENT=======================================
+
+# ===================================ROUTES FOR DEPARTMENT=======================================
 
 
 @app.route('/department/', methods=['GET'])
@@ -223,15 +223,15 @@ def addDepartment():
 
 @app.route('/department/<string:department_id>', methods=['PUT'])
 def updateDepartment(department_id):
-    depName = request.json['department_name']
-    return jsonify(department.updateDepartmentData(department_id, depName))
+    dep_name = request.json['department_name']
+    return jsonify(department.updateDepartmentData(department_id, dep_name))
 
 
 @app.route('/department/<string:department_id>', methods=['DELETE'])
 def deleteDepartment(department_id):
     return jsonify(department.deleteDepartmentData(department_id))
 
-#===================================ROUTES FOR EMP_DEP==========================================
+# ===================================ROUTES FOR EMP_DEP==========================================
 
 
 @app.route('/empdep/', methods=['GET'])
@@ -257,17 +257,8 @@ def updateEmpDep():
 def getEmpDepList():
     return jsonify(empdep.getEmpDepList())
 
-#===================================ROUTES FOR CUSTOM==========================================
 
-
-@app.route('/custom/<string:employee_id>', methods=['POST'])
-def getCustomSalary(employee_id):
-    start_date = request.json['start_date']
-    end_date = request.json['end_date']
-    return jsonify(custom.getCustomSalaryData(employee_id, start_date, end_date))
-
-
-#===================================ROUTES FOR CARDS==========================================
+# ===================================ROUTES FOR CARDS==========================================
 
 
 @app.route('/api/cards/', methods=["GET"])
@@ -292,9 +283,15 @@ def updateCard(employee_id):
     return jsonify(card.updateCardData(card_number, employee_id))
 
 
-#=============ROUTES FOR WORK TIME==========================================
+# =============ROUTES FOR WORK TIME==========================================
 
 
 @app.route('/timelist/<string:employee_id>', methods=['GET'])
 def getWorkTime(employee_id):
     return jsonify(work_time.getOnePersonWorkTime(employee_id))
+
+
+@app.route('/timelist/<string:date>', methods=['POST'])
+def getPresentList(date):
+    return jsonify(work_time.getPresentList(date))
+

@@ -80,7 +80,6 @@ class Card:
 
         sql_2 = 'UPDATE cards SET user_id=null WHERE card_number =%s'
         cursor.execute(sql_2, (card_number_to_null,))
-        con.commit()
 
         args_3 = user_id, card_number
         sql_3 = 'UPDATE cards SET user_id=(%s) WHERE card_number =%s'
