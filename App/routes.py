@@ -120,7 +120,8 @@ def addEmp():
     name = request.json['name']
     surname = request.json['surname']
     email = request.json['email']
-    return jsonify(employee.addEmpData(user_id, name, surname, email))
+    hire_date = request.json['hire_date']
+    return jsonify(employee.addEmpData(user_id, name, surname, email, hire_date))
 
 
 @app.route('/emp/<string:emp_id>', methods=['DELETE'])

@@ -62,12 +62,12 @@ class Employee:
 
         return 1
 
-    def addEmpData(self, userId, name, surname, email):
+    def addEmpData(self, userId, name, surname, email, hire_date):
         con = self.mysql.connect()
         cursor = con.cursor()
 
-        args = userId, name, surname, email
-        sql = "INSERT INTO employees(user_id, Name, Surname, email) VALUES (%s, %s, %s, %s)"
+        args = userId, name, surname, email, hire_date
+        sql = "INSERT INTO employees(user_id, Name, Surname, email, hire_date) VALUES (%s, %s, %s, %s, %s)"
 
         cursor.execute(sql, args)
 
