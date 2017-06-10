@@ -1,9 +1,9 @@
-from ZIG.app import app
+from App import app
 
 #=====================SQLAlchemy DataBase==============================
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(App)
 
 #=====================MySQL DataBase==============================
 from flaskext.mysql import MySQL
