@@ -10,6 +10,7 @@ from ZIG.SQLs.employeeSQL import Employee
 from ZIG.SQLs.salarySQL import Salary
 from ZIG.SQLs.userSQL import User
 from ZIG.SQLs.cardSQL import Card
+from ZIG.SQLs.worktimeSQL import WorkTime
 
 from ZIG.App.models import db
 from ZIG.App.models import mysql
@@ -24,6 +25,7 @@ empdep = Empdep(mysql)
 custom = Custom(mysql)
 logUser = LogUser(mysql)
 card = Card(mysql)
+work_time = WorkTime(mysql)
 
 #======================================session test=================================================
 
@@ -62,9 +64,9 @@ def getUser():
     return jsonify({user.getUserData()})
 
 
-@app.route('/users/<string:userId>', methods=['GET'])
-def getOneUser(userId):
-    return jsonify(user.getOneUserData(userId))
+@app.route('/users/<string:user_id>', methods=['GET'])
+def getOneUser(user_id):
+    return jsonify(user.getOneUserData(user_id))
 
 
 @app.route('/users/', methods=['POST'])
@@ -75,13 +77,13 @@ def addUser():
     return jsonify(user.addUserData(login, password, permission))
 
 
-@app.route('/users_p/<string:userId>', methods=['PUT'])
+@app.route('/users_p/<string:user_id>', methods=['PUT'])
 def updateUserPassword(user_id):
     password = request.json['password']
     return jsonify(user.updateUserPassword(user_id, password))
 
 
-@app.route('/users/<string:userId>', methods=['PUT'])
+@app.route('/users/<string:user_id>', methods=['PUT'])
 def updateUserData(user_id):
     login = request.json['login']
     password = request.json['password']
@@ -89,7 +91,7 @@ def updateUserData(user_id):
     return jsonify(user.updateUserData(user_id, login, password, permission))
 
 
-@app.route('/users/<string:userId>', methods=['DELETE'])
+@app.route('/users/<string:user_id>', methods=['DELETE'])
 def deleteUserData(user_id):
     return jsonify(user.deleteUserData(user_id))
 
@@ -174,7 +176,7 @@ def getOneSalary(employee_id):
     return jsonify(salary.getOneSalaryDara(employee_id))
 
 
-@app.route('/salary/<string:employeeId>', methods=['PUT'])
+@app.route('/salary/<string:employee_id>', methods=['PUT'])
 def updateSalary(employee_id):
     min_hours = request.json['min_work_hours']
     salary_v = request.json['salary_value']
@@ -193,16 +195,22 @@ def addSalary():
     return jsonify(salary.updateSalaryData(employee_id, min_hours, salary_v, start_hour, end_hour))
 
 
+@app.route('/countsalary/<string:employee_id>', methods=['POST'])
+def countSalary(employee_id):
+    start_date = request.json['start_date']
+    end_date = request.json['end_date']
+    return jsonify(salary.generateSalaryValue(employee_id, start_date, end_date))
+
 #===================================ROUTES FOR DEPARTMENT=======================================
 
 
 @app.route('/department/', methods=['GET'])
 def getDepartment():
 
-    return jsonify({department.getDepartmentData()})
+    return jsonify(department.getDepartmentData())
 
 
-@app.route('/department/<string:departmentId>', methods=['GET'])
+@app.route('/department/<string:department_id>', methods=['GET'])
 def getOneDepartment(department_id):
     return jsonify(department.getOneDepartmentData(department_id))
 
@@ -213,13 +221,13 @@ def addDepartment():
     return jsonify(department.addDepartmentData(dep_name))
 
 
-@app.route('/department/<string:departmentId>', methods=['PUT'])
+@app.route('/department/<string:department_id>', methods=['PUT'])
 def updateDepartment(department_id):
     depName = request.json['department_name']
     return jsonify(department.updateDepartmentData(department_id, depName))
 
 
-@app.route('/department/<string:departmentId>', methods=['DELETE'])
+@app.route('/department/<string:department_id>', methods=['DELETE'])
 def deleteDepartment(department_id):
     return jsonify(department.deleteDepartmentData(department_id))
 
@@ -244,10 +252,15 @@ def updateEmpDep():
     employee_id = request.json['employee_id']
     return jsonify(empdep.updateEmpDepData(employee_id, department_id))
 
+
+@app.route('/empdep/list/', methods=['GET'])
+def getEmpDepList():
+    return jsonify(empdep.getEmpDepList())
+
 #===================================ROUTES FOR CUSTOM==========================================
 
 
-@app.route('/custom/<string:employeeId>', methods=['POST'])
+@app.route('/custom/<string:employee_id>', methods=['POST'])
 def getCustomSalary(employee_id):
     start_date = request.json['start_date']
     end_date = request.json['end_date']
@@ -273,7 +286,15 @@ def addCard():
     return jsonify(card.addNewCard(card_number))
 
 
-@app.route('/api/empcard/<string:employeeId>', methods=['PUT'])
+@app.route('/api/empcard/<string:employee_id>', methods=['PUT'])
 def updateCard(employee_id):
     card_number = request.json['card_number']
     return jsonify(card.updateCardData(card_number, employee_id))
+
+
+#=============ROUTES FOR WORK TIME==========================================
+
+
+@app.route('/timelist/<string:employee_id>', methods=['GET'])
+def getWorkTime(employee_id):
+    return jsonify(work_time.getOnePersonWorkTime(employee_id))
