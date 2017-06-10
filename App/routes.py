@@ -11,6 +11,8 @@ from SQLs.salarySQL import Salary
 from SQLs.userSQL import User
 from SQLs.cardSQL import Card
 
+from Terminal.terminal import Terminal
+
 # from App.models import db
 from App.models import mysql
 from log_user import LogUser
@@ -24,6 +26,7 @@ empdep = Empdep(mysql)
 custom = Custom(mysql)
 logUser = LogUser(mysql)
 card = Card(mysql)
+terminal = Terminal(mysql)
 
 #======================================session test=================================================
 
@@ -284,3 +287,11 @@ def updateCard():
     employee_id = request.json['employee_id']
     card_id = request.json['card_id']
     return jsonify(card.addNewCard(card_id, employee_id))
+
+#===================================ROUTES FOR COMUNICATIONS WITH TERMINAL========================
+
+@app.route('/RFIDterminal', methods=['POST'])
+def checkCardID():
+    cardID = request.json['CardID']
+    eventMode = request.json['Mode']
+    return terminal.registerEvent(cardID = cardID, eventType= eventMode)
