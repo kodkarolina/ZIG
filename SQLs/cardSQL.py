@@ -57,6 +57,19 @@ class Card:
         con.close()
         return 1
 
-# Pobranie listy kart
-# get (/api/empcard)
-# OK: lista wszystkich kart (employee_id, firstName, lastName, card_number)
+    def updateCardtData(self, card_id, employee_id):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        args = card_id, employee_id
+        sql = "UPDATE cards SET card=%s WHERE department_id=%s"
+
+        cursor.execute(sql, args)
+
+        con.commit()
+
+        cursor.close()
+        con.close()
+        return 1
+
+

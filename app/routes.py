@@ -277,3 +277,10 @@ def getCardInfo():
 def addCard():
     card_number = request.json['card_number']
     return jsonify(card.addNewCard(card_number))
+
+
+@app.route('/api/empcard/', methods=['PUT'])
+def updateCard():
+    employee_id = request.json['employee_id']
+    card_id = request.json['card_id']
+    return jsonify(card.addNewCard(card_id, employee_id))
