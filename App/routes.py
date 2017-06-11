@@ -5,7 +5,6 @@ from flask import jsonify, request, session
 from App import app
 
 from SQLs.addressSQL import Address
-from SQLs.customSQL import Custom
 from SQLs.departmentSQL import Department
 from SQLs.empdepSQL import Empdep
 from SQLs.employeeSQL import Employee
@@ -26,7 +25,6 @@ address = Address(mysql)
 salary = Salary(mysql)
 department = Department(mysql)
 empdep = Empdep(mysql)
-custom = Custom(mysql)
 logUser = LogUser(mysql)
 card = Card(mysql)
 work_time = WorkTime(mysql)
@@ -304,6 +302,10 @@ def getWorkTime(employee_id):
 @app.route('/timelistall/<string:date>', methods=['GET'])
 def getPresentList(date):
     return jsonify(work_time.getPresentList(date))
+
+@app.route('/events/', methods=['GET'])
+def getEventList():
+    return jsonify(work_time.getEventList())
 
 #===================================ROUTES FOR COMUNICATIONS WITH TERMINAL========================
 @app.route('/RFIDterminal', methods=['POST'])

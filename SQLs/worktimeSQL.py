@@ -69,4 +69,27 @@ class WorkTime:
         con.close()
         return result
 
+    def getEventList(self):
+        con = self.mysql.connect()
+        cursor = con.cursor()
 
+        sql = "SELECT working_time_id, employee_id, name, surname, date, hour, type FROM working_time " \
+              "JOIN employees USING (employee_id)"
+
+        cursor.execute(sql)
+        columns = cursor.description
+
+        result = []
+        for value in cursor.fetchall():
+            tmp = {}
+            for (index, column) in enumerate(value):
+                if columns[index][0] == "date" or columns[index][0] == "hour":
+                    tmp[columns[index][0]] = str(column)
+                else:
+                    tmp[columns[index][0]] = column
+            result.append(tmp)
+        print(result)
+
+        cursor.close()
+        con.close()
+        return result

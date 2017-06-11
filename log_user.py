@@ -31,7 +31,7 @@ class LogUser:
     def get_result(self, login):
         con = self.mysql.connect()
         cursor = con.cursor()
-        sql = "SELECT employee_id, permission FROM employees JOIN users USING(user_id) WHERE login = %s"
+        sql = "SELECT user_id, employee_id, permission FROM employees JOIN users USING(user_id) WHERE login = %s"
         cursor.execute(sql, (login,))
 
         columns = cursor.description
