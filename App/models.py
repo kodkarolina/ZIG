@@ -9,6 +9,7 @@ from App.config import DB_HOST
 #
 # db = SQLAlchemy(app)
 
+
 #=====================MySQL DataBase==============================
 from flaskext.mysql import MySQL
 mysql = MySQL()
