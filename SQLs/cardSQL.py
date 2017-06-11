@@ -90,3 +90,19 @@ class Card:
         con.close()
         return 1
 
+    def addNewEmpToCard(self, user_id, card_number):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        args = user_id, card_number
+
+        sql = "UPDATE cards SET user_id = %s WHERE card_number = %s"
+
+        cursor.execute(sql, args)
+
+        con.commit()
+
+        cursor.close()
+        con.close()
+        return 1
+

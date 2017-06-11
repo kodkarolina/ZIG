@@ -191,11 +191,11 @@ def updateSalary(employee_id):
 @app.route('/salary/', methods=['POST'])
 def addSalary():
     employee_id = request.json['employee_id']
-    min_hours = request.json['min_work_info']
+    min_hours = request.json['min_work_hours']
     salary_v = request.json['salary_value']
     start_hour = request.json['start_hour']
     end_hour = request.json['end_hour']
-    return jsonify(salary.updateSalaryData(employee_id, min_hours, salary_v, start_hour, end_hour))
+    return jsonify(salary.addSalaryData(employee_id, min_hours, salary_v, start_hour, end_hour))
 
 
 @app.route('/earnings/<string:employee_id>', methods=['POST'])
@@ -287,6 +287,12 @@ def updateCard(employee_id):
     return jsonify(card.updateCardData(card_number, employee_id))
 
 
+@app.route('/api/addempcard/<string:user_id>', methods=['PUT'])
+def addEmpCard(user_id):
+    card_number = request.json['card_number']
+    return jsonify(card.addNewEmpToCard(user_id,card_number))
+
+
 # =============ROUTES FOR WORK TIME==========================================
 
 
@@ -295,7 +301,7 @@ def getWorkTime(employee_id):
     return jsonify(work_time.getOnePersonWorkTime(employee_id))
 
 
-@app.route('/timelist/<string:date>', methods=['POST'])
+@app.route('/timelistall/<string:date>', methods=['POST'])
 def getPresentList(date):
     return jsonify(work_time.getPresentList(date))
 

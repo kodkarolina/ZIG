@@ -53,10 +53,11 @@ class User:
         cursor.execute(sql)
 
         con.commit()
+        result = cursor.lastrowid
 
         cursor.close()
         con.close()
-        return 1
+        return result
 
     def updateUserPassword(self, userId, password):
         con = self.mysql.connect()
