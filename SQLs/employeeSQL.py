@@ -72,10 +72,11 @@ class Employee:
         cursor.execute(sql, args)
 
         con.commit()
+        result = cursor.lastrowid
 
         cursor.close()
         con.close()
-        return 1
+        return result
 
     def deleteEmpData(self, empId):
         con = self.mysql.connect()
