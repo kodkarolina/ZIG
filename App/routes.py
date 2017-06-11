@@ -1,3 +1,5 @@
+
+
 from flask import jsonify, request, session
 
 from App import app
@@ -11,6 +13,7 @@ from SQLs.salarySQL import Salary
 from SQLs.userSQL import User
 from SQLs.cardSQL import Card
 from SQLs.worktimeSQL import WorkTime
+from Terminal.terminal import Terminal
 
 from App.models import mysql
 from log_user import LogUser
@@ -27,6 +30,7 @@ custom = Custom(mysql)
 logUser = LogUser(mysql)
 card = Card(mysql)
 work_time = WorkTime(mysql)
+terminal = Terminal(mysql)
 
 # ======================================session test=================================================
 
@@ -294,4 +298,11 @@ def getWorkTime(employee_id):
 @app.route('/timelist/<string:date>', methods=['POST'])
 def getPresentList(date):
     return jsonify(work_time.getPresentList(date))
+
+#===================================ROUTES FOR COMUNICATIONS WITH TERMINAL========================
+@app.route('/RFIDterminal', methods=['POST'])
+def checkCardID():
+    cardID = request.json['CardID']
+    eventMode = request.json['Mode']
+    return terminal.registerEvent(cardID = cardID, eventType = eventMode)
 
