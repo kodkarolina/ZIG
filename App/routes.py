@@ -279,6 +279,11 @@ def addCard():
     return jsonify(card.addNewCard(card_number))
 
 
+@app.route('/api/empcard/<string:card_number>', methods=['DELETE'])
+def deleteCard(card_number):
+    return jsonify(card.deleteCard(card_number))
+
+
 @app.route('/api/empcard/<string:employee_id>', methods=['PUT'])
 def updateCard(employee_id):
     card_number = request.json['card_number']

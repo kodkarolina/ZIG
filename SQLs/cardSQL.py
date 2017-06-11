@@ -106,3 +106,16 @@ class Card:
         con.close()
         return 1
 
+    def deleteCard(self, card_number):
+        con = self.mysql.connect()
+        cursor = con.cursor()
+
+        sql = "DELETE FROM cards WHERE card_number = (%s)"
+
+        cursor.execute(sql, (card_number,) )
+
+        con.commit()
+
+        cursor.close()
+        con.close()
+        return 1
