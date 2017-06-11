@@ -301,7 +301,7 @@ def getWorkTime(employee_id):
     return jsonify(work_time.getOnePersonWorkTime(employee_id))
 
 
-@app.route('/timelistall/<string:date>', methods=['POST'])
+@app.route('/timelistall/<string:date>', methods=['GET'])
 def getPresentList(date):
     return jsonify(work_time.getPresentList(date))
 
