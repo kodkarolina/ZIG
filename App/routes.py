@@ -62,7 +62,7 @@ def logout():
 
 @app.route('/users/', methods=['GET'])
 def getUser():
-    return jsonify({user.getUserData()})
+    return jsonify(user.getUserData())
 
 
 @app.route('/users/<string:user_id>', methods=['GET'])
@@ -136,7 +136,7 @@ def deleteEmp(emp_id):
 
 @app.route('/address/', methods=['GET'])
 def getAddress():
-    return jsonify({'addresses': address.getAddressData()})
+    return jsonify(address.getAddressData())
 
 
 @app.route('/address/<string:employee_id>', methods=['GET'])
