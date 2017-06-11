@@ -294,4 +294,4 @@ def updateCard():
 def checkCardID():
     cardID = request.json['CardID']
     eventMode = request.json['Mode']
-    return terminal.registerEvent(cardID = cardID, eventType= eventMode)
+    return terminal.registerEvent(cardID = cardID, eventType = eventMode)
