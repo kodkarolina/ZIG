@@ -6,10 +6,10 @@ Projekt został stworzony w języku Python w wersji 3.6.0 z wykorzystaniem micro
 ## Instalacja i konfiguracja
 Aby uruchomić serwer systemu RCP należy przejść kilka prostych kroków:
 1) Pobieramy repozytorium
-2) Nstępnie należy skonfigurować serwer. Konfiguracja znajduje się w pliku `App\config.py.dist`
+2) Następnie należy skonfigurować serwer. Konfiguracja znajduje się w pliku `App\config.py.dist`
 * Zmieniamy nazwę pliku z `config.py.dist` na `config.py`
-* W pliku 'config.py' uzupełniamy dane dotyczce bazy danych, nazwę serwera oraz port, na którym serwer ma działać.
-3) Uruchamiamy skrypt `installScript`, który pobierze odpwoiednie biblioteki, zainicjalizuje table w bazie danych, a następnie wystartuje serwer
+* W pliku 'config.py' uzupełniamy dane dotyczące bazy danych, nazwę serwera oraz port, na którym serwer ma działać.
+3) Uruchamiamy skrypt `installScript`, który pobierze odpwoiednie biblioteki, zainicjalizuje tabele w bazie danych, a następnie wystartuje serwer
 
 ## Uruchomienie serwera
 Serwer należy uruchamiać poprzez wywołanie skryptu `server_start.bat`.
