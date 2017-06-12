@@ -4,7 +4,7 @@ from App.config import HOST_PORT
 
 if __name__ == "__main__":
     import sys
-    if(len(sys.argv) > 2 and sys.argv[1] == "-install"):
+    if(len(sys.argv) >= 2 and sys.argv[1] == "-install"):
         print("Database initialization")
         print("This operation DROP tables in database if any exists and create empty ones! Are you sure you want this?")
         print("Write \"yes\" to start database initialization process or click any key to skip.")
